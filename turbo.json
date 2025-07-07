@@ -1,0 +1,25 @@
+{
+  "$schema": "https://turborepo.org/schema.json",
+  "tasks": {
+    "dev": {
+      "dependsOn": [],
+      "outputs": []
+    },
+    "build": {
+      "dependsOn": [],
+      "outputs": []
+    },
+    "lint": {
+      "dependsOn": [],
+      "outputs": []
+    },
+    "build:injective": {
+      "dependsOn": [],
+      "outputs": []
+    },
+    "build:icp": {
+      "dependsOn": [],
+      "outputs": []
+    }
+  }
+} 
