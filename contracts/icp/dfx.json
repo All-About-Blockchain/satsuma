@@ -1,0 +1,8 @@
+{
+  "canisters": {
+    "icp_yield_vault": {
+      "main": "src/lib.rs",
+      "type": "rust"
+    }
+  }
+} 

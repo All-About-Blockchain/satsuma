@@ -87,6 +87,21 @@ pub struct BalanceQuery {
     pub address: String,
 }
 
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq)]
+pub struct AxelarGmpMsg {
+    pub destination_chain: String,
+    pub destination_address: String,
+    pub payload: Binary,
+    pub symbol: String,
+    pub amount: Uint128,
+}
+
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq)]
+pub struct IcpPayload {
+    pub principal: String,
+    pub amount: Uint128,
+}
+
 // Instantiate
 pub fn instantiate(
     deps: DepsMut,
@@ -195,8 +210,8 @@ fn execute_skim(
     let yield_amt = current_balance - total_principal;
     // Swap yield_amt nUSDC → USDC via Astroport
     let swap_msg = build_astroport_swap_msg_nusdc_to_usdc(&config, yield_amt);
-    // Bridge to ICP via Axelar GMP
-    let axelar_msg = build_axelar_gmp_msg(&config, yield_amt);
+    // Bridge to ICP via Axelar GMP, sending yield_collector principal as recipient
+    let axelar_msg = build_axelar_gmp_msg(&config, yield_amt, config.yield_collector.to_string());
     Ok(Response::new()
         .add_message(swap_msg)
         .add_message(axelar_msg)
@@ -245,12 +260,20 @@ fn build_astroport_swap_msg_nusdc_to_usdc(config: &Config, amount: Uint128) -> C
 }
 
 // Helper: Build Axelar GMP message
-fn build_axelar_gmp_msg(config: &Config, amount: Uint128) -> CosmosMsg {
-    // TODO: Fill in Axelar GMP callContractWithToken message
+fn build_axelar_gmp_msg(config: &Config, amount: Uint128, recipient_principal: String) -> CosmosMsg {
+    let payload = IcpPayload {
+        principal: recipient_principal,
+        amount,
+    };
     CosmosMsg::Wasm(WasmMsg::Execute {
         contract_addr: config.axelar_gateway.clone(),
-        msg: to_binary(&"axelar_gmp_msg_placeholder") // Replace with actual Axelar GMP msg
-            .unwrap(),
+        msg: to_binary(&AxelarGmpMsg {
+            destination_chain: "icp".to_string(),
+            destination_address: config.icp_canister_id.clone(),
+            payload: to_binary(&payload).unwrap(),
+            symbol: "nUSDC".to_string(),
+            amount,
+        }).unwrap(),
         funds: vec![],
     })
 } 
