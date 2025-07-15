@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { WalletProvider } from "./components/WalletContext";
+import WalletNav from "./components/WalletNav";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,7 +29,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <WalletProvider>
+          <nav className="w-full flex items-center justify-between px-6 py-4 border-b bg-background sticky top-0 z-40">
+            <div className="font-bold text-xl">Satsuma</div>
+            <WalletNav />
+          </nav>
+          {children}
+        </WalletProvider>
       </body>
     </html>
   );

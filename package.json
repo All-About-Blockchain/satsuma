@@ -15,5 +15,11 @@
     "build:injective": "cargo build --manifest-path contracts/injective/Cargo.toml --release",
     "build:icp": "echo 'Add your ICP build command here'"
   },
-  "packageManager": "npm@10.0.0"
-} 
+  "packageManager": "npm@10.0.0",
+  "dependencies": {
+    "@injectivelabs/ts-types": "^1.15.41",
+    "@injectivelabs/wallet-cosmos": "^1.15.43",
+    "@injectivelabs/wallet-evm": "^1.15.43",
+    "@injectivelabs/wallet-ts": "^1.14.41"
+  }
+}
