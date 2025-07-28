@@ -1,0 +1,11 @@
+
+> satsuma@0.1.0 dev
+> next dev --turbopack
+
+   ▲ Next.js 15.3.5 (Turbopack)
+   - Local:        http://localhost:3000
+   - Network:      http://10.5.0.2:3000
+
+ ✓ Starting...
+[Error: Next.js requires react >= 18.2.0 to be installed.]
+[?25h
